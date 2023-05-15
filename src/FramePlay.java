@@ -12,11 +12,11 @@ import javax.swing.JPanel;
 
 
 public class FramePlay extends JFrame implements ActionListener, KeyListener{
-    JButton buttons[][]=new JButton[6][5];
-    JPanel buttonsPanel=new JPanel();
-    String word;
-    int chance;
-    int letter;
+    private JButton buttons[][]=new JButton[6][5];
+    private JPanel buttonsPanel=new JPanel();
+    private String word;
+    private int round; 
+    private int letter; //index of the letter
 
     public FramePlay(){  
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +42,7 @@ public class FramePlay extends JFrame implements ActionListener, KeyListener{
         this.repaint();
         this.revalidate();
         this.addKeyListener(this);
+        word=generateWord();
 
     }
     @Override
@@ -49,26 +50,25 @@ public class FramePlay extends JFrame implements ActionListener, KeyListener{
         int code=e.getKeyCode();
         if (code>=65 && code<=90){ //Verify if the input is in the alphabet
             if (letter<5){ 
-                buttons[chance][letter].setText(String.valueOf((char)code));
+                buttons[round][letter].setText(String.valueOf((char)code));
                 letter++;
             }
         }
         else if(code==10){
-            if(chance<6){
+            if(round<6){
                 if (letter==5){
                     String attemptWord="";
                     for(int i=0;i<5;i++){
-                        attemptWord+=buttons[chance][i].getText();
+                        attemptWord+=buttons[round][i].getText();
                     }
-                    if(validWord(attemptWord)){
-                        Guess guess= new Guess(attemptWord);
-                    }
+                    Guess guess= new Guess(attemptWord);
+                    
                 }
             }
         }
         else if(code == KeyEvent.VK_BACK_SPACE){
             if(letter>0){
-                buttons[chance][--letter].setText(" ");
+                buttons[round][--letter].setText(" ");
             }
         }
         
@@ -92,5 +92,21 @@ public class FramePlay extends JFrame implements ActionListener, KeyListener{
     }
     public boolean validWord(String attempt){
         return false;
+    }
+    public String generateWord(){
+        String n="vazar";
+        return n;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public JButton[][] getButtons() {
+        return buttons;
+    }
+
+    public int getRound() {
+        return round;
     }
 }
