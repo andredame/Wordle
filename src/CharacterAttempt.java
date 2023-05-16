@@ -4,6 +4,7 @@ public class CharacterAttempt {
     private char element;
     private int pointer;
     private Color color;
+    
     public CharacterAttempt(char element){
         this.element=element;
         this.pointer=0;
