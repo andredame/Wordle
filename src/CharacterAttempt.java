@@ -1,7 +1,10 @@
-public class CharacterA {
+import java.awt.Color;
+
+public class CharacterAttempt {
     private char element;
     private int pointer;
-    public CharacterA(char element){
+    private Color color;
+    public CharacterAttempt(char element){
         this.element=element;
         this.pointer=0;
     }
@@ -14,9 +17,18 @@ public class CharacterA {
     }
     public void setPointer(int pointer) {
         this.pointer = pointer;
+        if(pointer==1){
+            color=new Color(117, 219, 146);;
+        }
+        else if(pointer ==2){
+            color=new Color(243, 195, 88);
+        }
     }
     public int getPointer() {
         return pointer;
     }
-    
+    public Color getColor() {
+        return color;
+    }
+
 }

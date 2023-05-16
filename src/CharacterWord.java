@@ -1,7 +1,7 @@
-public class CharacterW {
+public class CharacterWord {
     private char element;
     private boolean hasPointer;
-    public CharacterW(char element){
+    public CharacterWord(char element){
         this.hasPointer=false;
         this.element=element;
 
