@@ -1,9 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +25,7 @@ import Character.*;
         private JButton buttons[][]=new JButton[6][5];
         private JPanel buttonsPanel=new JPanel();
         private Label label;
+        private Panel keyboard;
         private String word;
         private boolean gameIsOver;
         private int round; 
@@ -50,24 +53,28 @@ import Character.*;
 
 
 
-        
             
-            buttonsPanel.setLayout(new GridLayout(6, 5, 1, 1));
             buttonsPanel.setVisible(true);
-            buttonsPanel.setPreferredSize(new Dimension(50, 100));
-            for (int i=0;i<buttons.length;i++){
-                for (int j=0;j<buttons[0].length;j++){
+            
+            buttonsPanel.setSize(new Dimension(100, 100));
+            for (int i=0;i<6;i++){
+                for (int j=0;j<5;j++){
                     buttons[i][j]=new JButton();
                     buttons[i][j].setBackground(Color.WHITE); 
                     buttons[i][j].setEnabled(false);
                     buttons[i][j].setFont(new Font ("MV Boli",Font.BOLD,20));
                     buttonsPanel.add(buttons[i][j]);
+                    Dimension buttonSize = new Dimension(100, 50); // Set the preferred size for the button
+                    buttons[i][j].setPreferredSize(buttonSize);
+        
+                    buttonsPanel.add(buttons[i][j]);
                 }
+                
             }
-           
+    
             
 
-            // Add the panelForButtonsPanel to the frame
+            // Add the panelForButtonsPanel to the frameS
             this.add(buttonsPanel);
 
             
