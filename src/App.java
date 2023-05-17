@@ -1,6 +1,9 @@
+import java.awt.Frame;
+
 public class App {
     public static void main(String[] args) throws Exception {
-        LaunchPage page = new LaunchPage();
+        FramePlay d = new FramePlay();
+        //LaunchPage p=new LaunchPage();
         
     }
 }
