@@ -1,3 +1,4 @@
+package Character;
 public class CharacterWord {
     private char element;
     private boolean hasPointer;

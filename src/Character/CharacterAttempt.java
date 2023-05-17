@@ -1,10 +1,11 @@
+package Character;
 import java.awt.Color;
 
 public class CharacterAttempt {
     private char element;
     private int pointer;
     private Color color;
-    
+
     public CharacterAttempt(char element){
         this.element=element;
         this.pointer=0;
@@ -23,6 +24,8 @@ public class CharacterAttempt {
         }
         else if(pointer ==2){
             color=new Color(243, 195, 88);
+        }else{
+            color=Color.RED;
         }
     }
     public int getPointer() {

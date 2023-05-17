@@ -1,18 +1,20 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.TextField;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.event.KeyListener;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import Character.*;
 
 
     public class FramePlay extends JFrame implements ActionListener,KeyListener{
@@ -20,20 +22,39 @@ import javax.swing.JPanel;
 
         private JButton buttons[][]=new JButton[6][5];
         private JPanel buttonsPanel=new JPanel();
+        private Label label;
         private String word;
         private boolean gameIsOver;
         private int round; 
         private int letter; //index of the letter
 
+
+        
         public FramePlay(){ 
+            //FRAME 
             this.round=0;
+            this.setBackground(Color.BLACK);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setLayout(new BorderLayout());
             this.setVisible(true);
-            this.setSize(500, 600);
-            buttonsPanel.setLayout(new GridLayout(6, 5, 5, 5));
+            this.setSize(600, 600);
+
+            //FRASE E FAIXA PRETA DE CIMA 
+            label=new Label();
+            label.setFont(new Font ("MV Boli",Font.BOLD,40));
+            label.setAlignment(label.CENTER);
+            label.setText("WORDLE");
+            label.setBackground(Color.BLACK);
+            label.setForeground(new Color(243, 195, 88));
+            label.isOpaque();
+            this.add(label,BorderLayout.NORTH);
+
+
+
+        
+            
+            buttonsPanel.setLayout(new GridLayout(6, 5, 1, 1));
             buttonsPanel.setVisible(true);
-    
+            buttonsPanel.setPreferredSize(new Dimension(50, 100));
             for (int i=0;i<buttons.length;i++){
                 for (int j=0;j<buttons[0].length;j++){
                     buttons[i][j]=new JButton();
@@ -43,23 +64,30 @@ import javax.swing.JPanel;
                     buttonsPanel.add(buttons[i][j]);
                 }
             }
+           
+            
 
+            // Add the panelForButtonsPanel to the frame
             this.add(buttonsPanel);
-            this.repaint();
-            this.revalidate();
-            this.addKeyListener(this);
-            word=generateWord();
 
+            
+            this.addKeyListener(this);
+        
+            this.setLocationRelativeTo(null);
+            word=generateWord();
+            addBorderInTheRound(new Color(51, 57, 57));
+ 
         }
         @Override
         public void keyPressed(KeyEvent e) {
-            
             int code=e.getKeyCode();
-
+            
             if(!gameIsOver){
+                addBorderInTheRound(new Color(51, 57, 57));
                     if (code>=65 && code<=90){ //Verify if the input is in the alphabet
                         if (letter<5){ 
                             buttons[round][letter].setText(String.valueOf((char)code));
+                            
                             letter++;
                         }
                 }
@@ -73,15 +101,37 @@ import javax.swing.JPanel;
                             PaintFrame(attemptWord.toLowerCase()); //set the pointers
                             gameIsOver=checkWord(attemptWord.toLowerCase());
                             if (!gameIsOver){ //If the game is not over goes to the next round 
+                                addBorderInTheRound(new Color(220, 0, 0));
                                 round++;
                                 letter=0;
+                            }
+                            if (round==6 && !gameIsOver){ 
+                                FrameLost f= new FrameLost();
+                                this.label.setText(getWord().toUpperCase());
+                                gameIsOver=true; 
                             }
                         }
                     }
                 }else if(code  == KeyEvent.VK_BACK_SPACE){
                     if(letter>0 && !gameIsOver){
                         buttons[round][--letter].setText(" ");
+                        
                     }
+                }
+
+            }
+            if(code == 27){
+                dispose();
+            }
+            addBorderInTheRound(new Color(51, 57, 57));
+            
+        }
+        public void addBorderInTheRound(Color c){
+            if (round<6){
+                Border roundBorder = BorderFactory.createLineBorder(c, 3);
+                for (int j = 0; j < buttons[round].length; j++) {
+                    buttons[round][j].setBorder(roundBorder);
+                    buttons[round][j].setForeground(c);
                 }
             }
         }
@@ -97,7 +147,6 @@ import javax.swing.JPanel;
         }
         public String generateWord(){
             String word = "vazar";
-            
             return word;
         } 
         public JButton[][] getButtons() {
@@ -154,6 +203,7 @@ import javax.swing.JPanel;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
+                
             }
         }
         public boolean checkWord(String attempt){
@@ -161,13 +211,10 @@ import javax.swing.JPanel;
         }
         @Override
         public void keyTyped(KeyEvent e) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
         }
         @Override
         public void keyReleased(KeyEvent e) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
+            
         }
 
 }
