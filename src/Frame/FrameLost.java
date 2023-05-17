@@ -1,3 +1,4 @@
+package Frame;
 import java.awt.Color;
 import java.awt.Frame;
 

@@ -17,6 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import Character.*;
+import Frame.FrameLost;
+import Words.*;
+
 
 
     public class FramePlay extends JFrame implements ActionListener,KeyListener{
@@ -76,8 +79,6 @@ import Character.*;
 
             // Add the panelForButtonsPanel to the frameS
             this.add(buttonsPanel);
-
-            
             this.addKeyListener(this);
         
             this.setLocationRelativeTo(null);
@@ -153,7 +154,9 @@ import Character.*;
             return false;
         }
         public String generateWord(){
-            String word = "vazar";
+            WordGenerator w = new WordGenerator();
+            String word = w.generateWord();
+            System.out.println(word);
             return word;
         } 
         public JButton[][] getButtons() {
@@ -167,15 +170,15 @@ import Character.*;
             CharacterWord[] charOfWord= new CharacterWord[5];
             CharacterAttempt[] charOfAttempt=new CharacterAttempt[5];
 
-
+            
             for (int i = 0; i < charOfWord.length; i++) {
                 charOfWord[i]= new CharacterWord (word.charAt(i));
                 charOfAttempt[i]=new CharacterAttempt (attemptWord.charAt(i));
             }
             
-            for (int i = 0; i < charOfWord.length; i++) {
+            for (int i = 0; i < 5; i++) {
 
-                if(!charOfWord[i].hasPointer()){
+                if(charOfAttempt[i].getPointer()!=1){
 
                     if(charOfWord[i].getElement() == charOfAttempt[i].getElement()){
                         
@@ -185,6 +188,7 @@ import Character.*;
                     }
                     else{ //search in the array the same letter 
                         for (int j=0;j<5;j++){
+                            System.out.println(charOfAttempt[i].getElement());
                             if (!charOfWord[j].hasPointer()){
 
 
@@ -194,8 +198,6 @@ import Character.*;
                                         charOfAttempt[j].setPointer(1);
                                         break;
                                     }
-
-
                                     else{
                                         charOfWord[j].setHasPointer(true);
                                         charOfAttempt[i].setPointer(2);
@@ -212,6 +214,7 @@ import Character.*;
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
                 
             }
+            
         }
         public boolean checkWord(String attempt){
             return attempt.equals(word);

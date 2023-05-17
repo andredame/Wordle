@@ -1,3 +1,4 @@
+package Frame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
@@ -8,6 +9,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import FramePlay;
+package Frame;
 
 public class LaunchPage extends JFrame implements ActionListener{
     JFrame frame=new JFrame();
@@ -22,7 +26,7 @@ public class LaunchPage extends JFrame implements ActionListener{
         playButton.setFont(f);
         playButton.setFocusable(false);
         playButton.addActionListener(this);
-        Color customColorButton = new Color(230, 135, 37);
+        Color customColorButton = new Color(243, 195, 88);
         playButton.setBackground(customColorButton);
         Color customColor = new Color(1, 54, 91);
         frame.getContentPane().setBackground(customColor);
