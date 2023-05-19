@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.random.*;
+import java.util.regex.Pattern;
+import java.text.Normalizer;
+
 
 
 public class WordGenerator {
@@ -15,18 +18,24 @@ public class WordGenerator {
    
     public String generateWord() {
         Random r=new Random();
-        int numLine=r.nextInt(0,10);
+        int numLine=r.nextInt(1,4);
         Path path = Paths.get("src","Words","Words.csv");
         String randomLine="";
-
-        try(BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())){
-           randomLine=readLineFromFile(reader, numLine);
-           
-        }
-        catch(Exception e){
-            System.err.format("Erro de formatacao: %s%n", e);
-        }
+        boolean flag=true;
+        while(flag){
+            try(BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())){
+                randomLine=readLineFromFile(reader, numLine);
+                
+                }
+                catch(Exception e){
+                    System.err.format("Erro de formatacao: %s%n", e);
+                }
+                if (randomLine.length()==5){
+                    return randomLine.toLowerCase();
+                }
+        }   
         return randomLine;
+           
     }
     public String getWord() {
         return word;
@@ -35,10 +44,13 @@ public class WordGenerator {
         String line="";
         for (int i=0;i<lineNum;i++){
             line=reader.readLine();
-
         }
         return line;
     }
+    
+
+    
+    
 }
 
 

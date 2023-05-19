@@ -36,6 +36,7 @@ import Words.*;
         //KEYBOARD ATRIBUTES
         private JFrame f = new JFrame("Keyboard");
         private JPanel keyboard = new JPanel();
+        
 
         private static final String[] keyA = 
             { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
@@ -44,8 +45,10 @@ import Words.*;
             { "A", "S", "D", "F", "G", "H", "J", "K", "L", "Enter"};
         private static final String[] keyC = 
             { "Z", "X", "C", "V", "B", "N", "M", };
-       
 
+        private JButton[] keysAbove=new JButton[keyA.length];
+        private JButton[] keysMiddle=new JButton[keyA.length];
+        private Keyboard[] keysBelow=new Keyboard[keyA.length];
 
         
         public FramePlay(){ 
@@ -111,6 +114,7 @@ import Words.*;
             c.gridx = row;
             
             JButton j = new JButton(keyA[row]);
+            keysAbove[row]=new Keyboard(keyA[row], background);
             j.setBackground(background);
             j.setForeground(Color.WHITE);
             j.setName(keyA[row]);
@@ -125,6 +129,8 @@ import Words.*;
             c.gridx = row;
            
             JButton j = new JButton(keyB[row]);
+            
+            keysMiddle[row]=new Keyboard(keyB[row], background);
             j.setBackground(background);
             j.setForeground(Color.WHITE);
             j.setName(keyB[row]);
@@ -138,6 +144,8 @@ import Words.*;
             
             c.gridx = row+1;
             JButton j = new JButton(keyC[row]);
+            
+            keysBelow[row]=new Keyboard(keyC[row], background);
             j.setBackground(background);
             j.setForeground(Color.WHITE);
             j.addActionListener(listener);
@@ -218,10 +226,8 @@ import Words.*;
                 }
             }
         }
-        public void PaintKeyboard(char c,Color C){
-            if (round<6){
-               
-            }
+        public void PaintKeyboard(char c){
+            
         }
         public void addBorderInTheRound(Color c){
             if (round<6){
@@ -253,6 +259,7 @@ import Words.*;
          */
         public void PaintFrame(String attemptWord){
             //Word Game
+            System.out.println(attemptWord);
             CharacterWord[] charOfWord= new CharacterWord[5];
             CharacterAttempt[] charOfAttempt=new CharacterAttempt[5];
 
@@ -276,7 +283,6 @@ import Words.*;
                         for (int j=0;j<5;j++){
                             System.out.println(charOfAttempt[i].getElement());
                             if (!charOfWord[j].hasPointer()){
-
 
                                 if ( charOfAttempt[i].getElement() == charOfWord[j].getElement()){
                                     if(charOfWord[j].getElement() == charOfAttempt[j].getElement()){ //check wheter 

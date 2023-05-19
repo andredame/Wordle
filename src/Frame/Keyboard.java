@@ -10,11 +10,11 @@ public class Keyboard extends JButton {
 
     private  String character;
     private Color color;
-    private JButton button;
     
-    public Keyboard(String character){
+    
+    public Keyboard(String character,Color c){
         this.character=character;
-        setBackground(new Color (9, 9, 9,255));
+        this.color=color;
     }
     public String getCharacter() {
         return character;
@@ -22,4 +22,8 @@ public class Keyboard extends JButton {
     public Color getColor() {
         return color;
     }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }
