@@ -52,7 +52,8 @@ import Words.*;
         private ArrayList<Keyboard> keysMiddle=new ArrayList<>();
         private ArrayList<Keyboard> keysBelow= new ArrayList<>();
         private Color background;
-
+        private JPanel[] pRow;
+        private GridBagConstraints c;
 
         
         public FramePlay(){ 
@@ -107,36 +108,37 @@ import Words.*;
             //Atributes of the keyboard
             
         keyboard.setLayout(new GridBagLayout());
-        JPanel pRow;
-        GridBagConstraints c = new GridBagConstraints();
+        
+         c = new GridBagConstraints();
         //c.anchor = GridBagConstraints.;
         //c.weightx = 1f;
-        
+        pRow=new JPanel[3];
 
         for (int row = 0; row < keyA.length; ++row) {
-            pRow = new JPanel(new GridBagLayout());
-            c.gridx = row;
-            Keyboard j = new Keyboard(keyA[row],row,1,background,listener);
-            pRow.add(j);
-            keyboard.add(pRow, c);
+            pRow[0] = new JPanel(new GridBagLayout());
+            c.gridx = row+2;
+            Keyboard j = new Keyboard(keyA[row],row,1,background,listener,c.gridx);
+            keysAbove.add(j);
+            pRow[0].add(j);
+            keyboard.add(pRow[0], c);
         }
         for (int row = 0; row < keyB.length; ++row) {
-            pRow = new JPanel(new GridBagLayout());
-            c.gridx = row;
-            Keyboard j = new Keyboard(keyB[row],row,2,background,listener);
-            pRow.add(j);
-            keyboard.add(pRow, c);   
+            pRow[1] = new JPanel(new GridBagLayout());
+            c.gridx = row+2;
+            Keyboard j = new Keyboard(keyB[row],row,2,background,listener,c.gridx);
+            keysMiddle.add(j);
+            pRow[1].add(j);
+            keyboard.add(pRow[1], c);   
         }
         for (int row = 0; row < keyC.length; ++row) {
-            pRow = new JPanel(new GridBagLayout());
-            
-            c.gridx = row+1;
-            Keyboard j = new Keyboard(keyC[row],row,3,background,listener);
-
-            pRow.add(j);
-            keyboard.add(pRow, c);
+            pRow[2] = new JPanel(new GridBagLayout());
+            c.gridx = row+2;
+            Keyboard j = new Keyboard(keyC[row],row,3,background,listener,c.gridx);
+            keysBelow .add(j);
+            pRow[2].add(j);
+            keyboard.add(pRow[2], c);  
             this.setForeground(Color.BLACK);
-        }
+        } 
         keyboard.setBackground(background);
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(background);
@@ -153,7 +155,7 @@ import Words.*;
         public void keyPressed(KeyEvent e) {
             /* */
             int code=e.getKeyCode();
-            System.out.println(code);
+           
            
             if(!gameIsOver){
                 addBorderInTheRound(new Color(51, 57, 57));
@@ -207,22 +209,28 @@ import Words.*;
                 }
             }
         }
-        public void PaintKeyboard(char c,Color color){
+        public void PaintKeyboard(char c,int pointer){
+            
             Color green = new Color(117, 219, 146);
             Color red=Color.RED;
             Color yellow =new Color(243, 195, 88);
+            System.out.println(pointer);
             
             for (Keyboard objeto : keysAbove) {
+                
                 String charString = String.valueOf(Character.toUpperCase(c));
+                
                 if (objeto.getCharacter().equals(charString)) {
-                    if(objeto.getColor().equals(green)){
+                    if(objeto.getPointer()==1){
                         return;
                     }else{
-                        if (color.equals(green)){
+                        if (pointer==1){
+                            objeto.setPointer(pointer);
                             objeto.setColor(green);
+                            return;
                         }else{
-                            if(color.equals(yellow) && objeto.getColor().equals(background) ){
-                                objeto.setColor(color);
+                            if(pointer==2 && objeto.getPointer()==0 ){
+                                return;
                             }
                         }
                     }
@@ -230,16 +238,56 @@ import Words.*;
                 }
             }
             for (Keyboard objeto : keysMiddle) {
+
                     String charString = String.valueOf(Character.toUpperCase(c));
                     if (objeto.getCharacter().equals(charString)) {
-                        
+                        if(objeto.getPointer()==1){
+                            System.out.print(objeto.getCharacter());
+                            return;
+                        }else{
+                            if (pointer==1){
+                           
+                                objeto.setColor(green);
+                                objeto.setPointer(pointer);
+                                System.out.print(objeto.getCharacter());
+                                return;
+                            }else{
+                                if(pointer==2 && objeto.getPointer()==0 ){
+                                    objeto.setColor(yellow);
+                                    pRow[1].setBackground(yellow);
+                                    objeto.setPointer(pointer);
+                                    System.out.print(objeto.getCharacter());
+                                    
+                                    return;
+                                }
+                            }
+                        }
                     }
                 }
             
             for (Keyboard objeto : keysBelow) {
+                
                 String charString = String.valueOf(Character.toUpperCase(c));
                 if (objeto.getCharacter().equals(charString)) {
-                    
+                    if(objeto.getPointer()==1){
+                        return;
+                    }else{
+                        if (pointer==1){
+                       
+                            objeto.setColor(green);
+                            objeto.setPointer(pointer);
+                            return;
+                        }else{
+                            if(pointer==2 && objeto.getPointer()==0 ){
+                                objeto.setColor(yellow);
+                                pRow[0].setBackground(yellow);
+                                objeto.setPointer(pointer);
+                               
+                                
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -273,7 +321,6 @@ import Words.*;
          */
         public void PaintFrame(String attemptWord){
             //Word Game
-            System.out.println(attemptWord);
             CharacterWord[] charOfWord= new CharacterWord[5];
             CharacterAttempt[] charOfAttempt=new CharacterAttempt[5];
 
@@ -295,7 +342,7 @@ import Words.*;
                     }
                     else{ //search in the array the same letter 
                         for (int j=0;j<5;j++){
-                            System.out.println(charOfAttempt[i].getElement());
+                            
                             if (!charOfWord[j].hasPointer()){
 
                                 if ( charOfAttempt[i].getElement() == charOfWord[j].getElement()){
@@ -318,7 +365,7 @@ import Words.*;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
-                PaintKeyboard(charOfAttempt[i].getElement(),charOfAttempt[i].getColor());
+                PaintKeyboard(charOfAttempt[i].getElement(),charOfAttempt[i].getPointer());
                 
             }
             
@@ -336,7 +383,7 @@ import Words.*;
         
         ActionListener listener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.print(e.getActionCommand());
+                //sasdasdSystem.out.print(e.getActionCommand());
                 String nomeBotao = ((JButton) e.getSource()).getName();
                 if (letter<5 && !nomeBotao.equals("Enter")){
                     fillButton(nomeBotao);
