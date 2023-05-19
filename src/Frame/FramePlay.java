@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -46,13 +48,15 @@ import Words.*;
         private static final String[] keyC = 
             { "Z", "X", "C", "V", "B", "N", "M", };
 
-        private JButton[] keysAbove=new JButton[keyA.length];
-        private JButton[] keysMiddle=new JButton[keyA.length];
-        private Keyboard[] keysBelow=new Keyboard[keyA.length];
+        private ArrayList<Keyboard> keysAbove= new ArrayList<>();
+        private ArrayList<Keyboard> keysMiddle=new ArrayList<>();
+        private ArrayList<Keyboard> keysBelow= new ArrayList<>();
+        private Color background;
+
 
         
         public FramePlay(){ 
-            Color background=new Color (113, 66, 55);
+             background=new Color (113, 66, 55);
             
 
             //FRAME 
@@ -112,47 +116,24 @@ import Words.*;
         for (int row = 0; row < keyA.length; ++row) {
             pRow = new JPanel(new GridBagLayout());
             c.gridx = row;
-            
-            JButton j = new JButton(keyA[row]);
-            keysAbove[row]=new Keyboard(keyA[row], background);
-            j.setBackground(background);
-            j.setForeground(Color.WHITE);
-            j.setName(keyA[row]);
-            
+            Keyboard j = new Keyboard(keyA[row],row,1,background,listener);
             pRow.add(j);
-            
             keyboard.add(pRow, c);
-            j.addActionListener(listener);
         }
         for (int row = 0; row < keyB.length; ++row) {
             pRow = new JPanel(new GridBagLayout());
             c.gridx = row;
-           
-            JButton j = new JButton(keyB[row]);
-            
-            keysMiddle[row]=new Keyboard(keyB[row], background);
-            j.setBackground(background);
-            j.setForeground(Color.WHITE);
-            j.setName(keyB[row]);
-            j.addActionListener(listener);
+            Keyboard j = new Keyboard(keyB[row],row,2,background,listener);
             pRow.add(j);
-            keyboard.add(pRow, c);
-            
+            keyboard.add(pRow, c);   
         }
         for (int row = 0; row < keyC.length; ++row) {
             pRow = new JPanel(new GridBagLayout());
             
             c.gridx = row+1;
-            JButton j = new JButton(keyC[row]);
-            
-            keysBelow[row]=new Keyboard(keyC[row], background);
-            j.setBackground(background);
-            j.setForeground(Color.WHITE);
-            j.addActionListener(listener);
-            j.setName(keyC[row]);
-            
+            Keyboard j = new Keyboard(keyC[row],row,3,background,listener);
+
             pRow.add(j);
-            
             keyboard.add(pRow, c);
             this.setForeground(Color.BLACK);
         }
@@ -226,8 +207,41 @@ import Words.*;
                 }
             }
         }
-        public void PaintKeyboard(char c){
+        public void PaintKeyboard(char c,Color color){
+            Color green = new Color(117, 219, 146);
+            Color red=Color.RED;
+            Color yellow =new Color(243, 195, 88);
             
+            for (Keyboard objeto : keysAbove) {
+                String charString = String.valueOf(Character.toUpperCase(c));
+                if (objeto.getCharacter().equals(charString)) {
+                    if(objeto.getColor().equals(green)){
+                        return;
+                    }else{
+                        if (color.equals(green)){
+                            objeto.setColor(green);
+                        }else{
+                            if(color.equals(yellow) && objeto.getColor().equals(background) ){
+                                objeto.setColor(color);
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            for (Keyboard objeto : keysMiddle) {
+                    String charString = String.valueOf(Character.toUpperCase(c));
+                    if (objeto.getCharacter().equals(charString)) {
+                        
+                    }
+                }
+            
+            for (Keyboard objeto : keysBelow) {
+                String charString = String.valueOf(Character.toUpperCase(c));
+                if (objeto.getCharacter().equals(charString)) {
+                    
+                }
+            }
         }
         public void addBorderInTheRound(Color c){
             if (round<6){
@@ -304,6 +318,7 @@ import Words.*;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
+                PaintKeyboard(charOfAttempt[i].getElement(),charOfAttempt[i].getColor());
                 
             }
             

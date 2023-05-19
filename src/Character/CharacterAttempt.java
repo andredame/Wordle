@@ -20,7 +20,7 @@ public class CharacterAttempt {
     public void setPointer(int pointer) {
         this.pointer = pointer;
         if(pointer==1){
-            color=new Color(117, 219, 146);;
+            color=new Color(117, 219, 146);
         }
         else if(pointer ==2){
             color=new Color(243, 195, 88);
