@@ -115,8 +115,8 @@ import Words.*;
                 for (int col = 0; col < key[row].length; ++col) {
                     JButton button = new JButton(key[row][col]);
                     button.addActionListener(this::buttonPressed);
-                    button.setBackground(new Color(225, 221, 220));
-                    button.setForeground(Color.BLACK);
+                    button.setBackground(background);
+                    button.setForeground(new Color(153, 153, 153));
                     String actionCommand = "key_" + key[row][col];
                     button.setActionCommand(actionCommand);
                     button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(key[row][col]), actionCommand);
