@@ -10,12 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 import Character.*;
 import Words.*;
@@ -28,7 +29,7 @@ import Words.*;
         private JButton buttons[][]=new JButton[6][5];
         private JPanel buttonsPanel=new JPanel();
         private Label label;
-        private JPanel mainPanel=new JPanel();
+
         private String word;
         private boolean gameIsOver;
         private int round; 
@@ -39,25 +40,19 @@ import Words.*;
         private JFrame f = new JFrame("Keyboard");
         private JPanel keyboard = new JPanel();
         
+        private static final String[][] key = {
+            { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P","BACK_SPACE"},
+            { "A", "S", "D", "F", "G", "H", "J", "K", "L",  "ENTER"},
+            { "Z", "X", "C", "V", "B", "N", "M"},
 
-        private static final String[] keyA = 
-            { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"};
-            
-        private static final String[] keyB = 
-            { "A", "S", "D", "F", "G", "H", "J", "K", "L", "Enter"};
-        private static final String[] keyC = 
-            { "Z", "X", "C", "V", "B", "N", "M", };
+    };
 
-        private ArrayList<Keyboard> keysAbove= new ArrayList<>();
-        private ArrayList<Keyboard> keysMiddle=new ArrayList<>();
-        private ArrayList<Keyboard> keysBelow= new ArrayList<>();
         private Color background;
-        private JPanel[] pRow;
         private GridBagConstraints c;
 
         
         public FramePlay(){ 
-             background=new Color (113, 66, 55);
+             background=new Color (78, 44, 67);
             
 
             //FRAME 
@@ -87,11 +82,9 @@ import Words.*;
                     buttons[i][j].setBackground(background); 
                     buttons[i][j].setEnabled(false);
                     buttons[i][j].setFont(new Font ("Apple",Font.BOLD,20));
-                    buttons[i][j].setForeground(Color.BLUE);
                     buttonsPanel.add(buttons[i][j]);
                     Dimension buttonSize = new Dimension(150, 50); // Set the preferred size for the button
                     buttons[i][j].setPreferredSize(buttonSize);
-                    buttons[i][j].addActionListener(null);
                     buttonsPanel.add(buttons[i][j]);
                 }    
             }
@@ -99,7 +92,7 @@ import Words.*;
 
             this.setResizable(false);//prevent a Java frame from being displayed in full screen
             this.add(buttonsPanel);
-            this.addKeyListener(this);
+            
             this.setLocationRelativeTo(null); // Set the frame at the middle of the screen
             word=generateWord(); // generate the word
             addBorderInTheRound(new Color(51, 57, 57));
@@ -107,92 +100,96 @@ import Words.*;
 
             //Atributes of the keyboard
             
-        keyboard.setLayout(new GridBagLayout());
-        
-         c = new GridBagConstraints();
-        //c.anchor = GridBagConstraints.;
-        //c.weightx = 1f;
-        pRow=new JPanel[3];
+            keyboard.setLayout(new GridBagLayout());
 
-        for (int row = 0; row < keyA.length; ++row) {
-            pRow[0] = new JPanel(new GridBagLayout());
-            c.gridx = row+2;
-            Keyboard j = new Keyboard(keyA[row],row,1,background,listener,c.gridx);
-            keysAbove.add(j);
-            pRow[0].add(j);
-            keyboard.add(pRow[0], c);
-        }
-        for (int row = 0; row < keyB.length; ++row) {
-            pRow[1] = new JPanel(new GridBagLayout());
-            c.gridx = row+2;
-            Keyboard j = new Keyboard(keyB[row],row,2,background,listener,c.gridx);
-            keysMiddle.add(j);
-            pRow[1].add(j);
-            keyboard.add(pRow[1], c);   
-        }
-        for (int row = 0; row < keyC.length; ++row) {
-            pRow[2] = new JPanel(new GridBagLayout());
-            c.gridx = row+2;
-            Keyboard j = new Keyboard(keyC[row],row,3,background,listener,c.gridx);
-            keysBelow .add(j);
-            pRow[2].add(j);
-            keyboard.add(pRow[2], c);  
-            this.setForeground(Color.BLACK);
-        } 
+            JPanel pRow;
+            GridBagConstraints c = new GridBagConstraints();
+            c.anchor = GridBagConstraints.WEST;
+            c.weightx = 1d;
+    
+            for (int row = 0; row < key.length; ++row) {
+                pRow = new JPanel(new GridBagLayout());
+
+                c.gridy = row;
+
+                for (int col = 0; col < key[row].length; ++col) {
+                    JButton button = new JButton(key[row][col]);
+                    button.addActionListener(this::buttonPressed);
+                    button.setBackground(new Color(225, 221, 220));
+                    button.setForeground(Color.BLACK);
+                    String actionCommand = "key_" + key[row][col];
+                    button.setActionCommand(actionCommand);
+                    button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(key[row][col]), actionCommand);
+                    button.getActionMap().put(actionCommand, new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buttonPressed(e);
+                        }
+                    });
+                    pRow.add(button);
+                }
+
+                keyboard.add(pRow, c);
+            }
+
+            f.add(keyboard);
+        
         keyboard.setBackground(background);
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(background);
         mainPanel.add(keyboard);
-        f.addKeyListener(this);
         this.add(mainPanel,BorderLayout.SOUTH);
+        this.addKeyListener(null);
 
 
         }
+        private void buttonPressed(ActionEvent e) {
 
-
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            /* */
-            int code=e.getKeyCode();
-           
-           
-            if(!gameIsOver){
+            JButton button = (JButton) e.getSource();
+            String text = button.getText();
+            System.out.println(text);
+            if (!gameIsOver){
                 addBorderInTheRound(new Color(51, 57, 57));
-                    if (code>=65 && code<=90){ //Verify if the input is in the alphabet
-                        if (letter<5){ 
-                            fillButton(String.valueOf((char)code));
-                        }
-                        
-                }
-                else if(code==10){              //if the user pressed ENTER, it means that he wants to submit his word to check 
-                   enterPressed();
-                }else if(code  == KeyEvent.VK_BACK_SPACE){
-                    if(letter>0 && !gameIsOver){
+                if (text.equals("ENTER")) {
+                    enterPressed();
+                } else if (text.equals("BACK_SPACE")) {
+                    if (letter > 0 && !gameIsOver) {
                         backSpace();
                     }
                 }
-            }
-            if(code == 27){
+                else{
+                    fillButton(text);
+                }
+            addBorderInTheRound(new Color(51, 57, 57));
+           }
+        }
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int code = e.getKeyCode();
+            if (code == 27) {
                 dispose();
             }
-            addBorderInTheRound(new Color(51, 57, 57));
-            
+    
         }
         public void fillButton(String code){
-            buttons[round][letter].setText(code);
-            letter++;
+            if (letter<5){
+                buttons[round][letter].setText(code);
+                letter++;
+            }
+            
         }
         public void backSpace(){
             buttons[round][--letter].setText(" ");
         }
 
         public void enterPressed(){
+            
             if(round<6){                //check the round 
                 String attemptWord="";
                 if (letter==5){ //check wheter user submitted a 5 letter word or not
                     for(int i=0;i<5;i++){
-                        attemptWord+=buttons[round][i].getText(); //add in AttemptWord the characters of the Word
+                        System.out.println(attemptWord+=buttons[round][i].getText());
+                        //attemptWord+=buttons[round][i].getText(); //add in AttemptWord the characters of the Word
                     }
                     PaintFrame(attemptWord.toLowerCase()); //set the pointers
                     gameIsOver=checkWord(attemptWord.toLowerCase());
@@ -214,8 +211,8 @@ import Words.*;
             Color green = new Color(117, 219, 146);
             Color red=Color.RED;
             Color yellow =new Color(243, 195, 88);
-            System.out.println(pointer);
             
+            /* 
             for (Keyboard objeto : keysAbove) {
                 
                 String charString = String.valueOf(Character.toUpperCase(c));
@@ -242,21 +239,20 @@ import Words.*;
                     String charString = String.valueOf(Character.toUpperCase(c));
                     if (objeto.getCharacter().equals(charString)) {
                         if(objeto.getPointer()==1){
-                            System.out.print(objeto.getCharacter());
+
                             return;
                         }else{
                             if (pointer==1){
                            
                                 objeto.setColor(green);
                                 objeto.setPointer(pointer);
-                                System.out.print(objeto.getCharacter());
                                 return;
                             }else{
                                 if(pointer==2 && objeto.getPointer()==0 ){
                                     objeto.setColor(yellow);
                                     pRow[1].setBackground(yellow);
                                     objeto.setPointer(pointer);
-                                    System.out.print(objeto.getCharacter());
+                                    
                                     
                                     return;
                                 }
@@ -264,7 +260,7 @@ import Words.*;
                         }
                     }
                 }
-            
+            ,
             for (Keyboard objeto : keysBelow) {
                 
                 String charString = String.valueOf(Character.toUpperCase(c));
@@ -289,7 +285,7 @@ import Words.*;
                         }
                     }
                 }
-            }
+            } */
         }
         public void addBorderInTheRound(Color c){
             if (round<6){
@@ -365,7 +361,7 @@ import Words.*;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
-                PaintKeyboard(charOfAttempt[i].getElement(),charOfAttempt[i].getPointer());
+                
                 
             }
             
@@ -381,20 +377,7 @@ import Words.*;
             
         }
         
-        ActionListener listener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //sasdasdSystem.out.print(e.getActionCommand());
-                String nomeBotao = ((JButton) e.getSource()).getName();
-                if (letter<5 && !nomeBotao.equals("Enter")){
-                    fillButton(nomeBotao);
-                // Coloque aqui o código que deseja executar quando o botão for clicado
-                }
-                if(nomeBotao.equals("Enter")){
-                    enterPressed();
-                }
-               
-            }
-        };
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
