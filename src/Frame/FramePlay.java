@@ -25,7 +25,7 @@ import Words.*;
 
     public class FramePlay extends JFrame implements ActionListener,KeyListener{
 
-
+        private Color background;
         private JButton buttons[][]=new JButton[6][5];
         private JPanel buttonsPanel=new JPanel();
         private Label label;
@@ -47,59 +47,19 @@ import Words.*;
 
     };
 
-        private Color background;
-        private GridBagConstraints c;
-
+        
         
         public FramePlay(){ 
-             background=new Color (78, 44, 67);
-            
-
+            background=new Color (78, 44, 67);
+            Color letterWordle= new Color(45, 242, 19);
             //FRAME 
             this.round=0;
             this.setBackground(background);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setVisible(true);
             this.setSize(800, 515);
-
-            //FRASE E FAIXA PRETA DE CIMA 
-            label=new Label();
-            label.setFont(new Font ("Bodoni MT",Font.BOLD,40));
-            label.setAlignment(label.CENTER);
-            label.setText("WORDLE");
-            label.setBackground(background);
-            label.setForeground(Color.WHITE);
-            label.isOpaque();
-            this.add(label,BorderLayout.NORTH);
-
-            //TENTATIVAS 
-            buttonsPanel.setBackground(background);
-            buttonsPanel.setVisible(true);
-            buttonsPanel.setSize(new Dimension(100, 100));
-            for (int i=0;i<6;i++){
-                for (int j=0;j<5;j++){
-                    buttons[i][j]=new JButton();
-                    buttons[i][j].setBackground(background); 
-                    buttons[i][j].setEnabled(false);
-                    buttons[i][j].setFont(new Font ("Apple",Font.BOLD,20));
-                    buttonsPanel.add(buttons[i][j]);
-                    Dimension buttonSize = new Dimension(150, 50); // Set the preferred size for the button
-                    buttons[i][j].setPreferredSize(buttonSize);
-                    buttonsPanel.add(buttons[i][j]);
-                }    
-            }
-
-
-            this.setResizable(false);//prevent a Java frame from being displayed in full screen
-            this.add(buttonsPanel);
-            
-            this.setLocationRelativeTo(null); // Set the frame at the middle of the screen
-            word=generateWord(); // generate the word
-            addBorderInTheRound(new Color(51, 57, 57));
-        
-
             //Atributes of the keyboard
-            
+
             keyboard.setLayout(new GridBagLayout());
 
             JPanel pRow;
@@ -140,6 +100,49 @@ import Words.*;
         mainPanel.add(keyboard);
         this.add(mainPanel,BorderLayout.SOUTH);
         this.addKeyListener(null);
+            
+        
+            
+
+            
+
+            //FRASE E FAIXA PRETA DE CIMA 
+            label=new Label();
+            label.setFont(new Font ("Bodoni MT",Font.BOLD,40));
+            label.setAlignment(label.CENTER);
+            label.setText("WORDLE");
+            label.setBackground(background);
+            label.setForeground(letterWordle);
+            label.isOpaque();
+            this.add(label,BorderLayout.NORTH);
+
+            //TENTATIVAS 
+            buttonsPanel.setBackground(background);
+            buttonsPanel.setVisible(true);
+            buttonsPanel.setSize(new Dimension(100, 100));
+            for (int i=0;i<6;i++){
+                for (int j=0;j<5;j++){
+                    buttons[i][j]=new JButton();
+                    buttons[i][j].setBackground(background); 
+                    buttons[i][j].setEnabled(false);
+                    buttons[i][j].setFont(new Font ("Apple",Font.BOLD,20));
+                    buttonsPanel.add(buttons[i][j]);
+                    Dimension buttonSize = new Dimension(150, 50); // Set the preferred size for the button
+                    buttons[i][j].setPreferredSize(buttonSize);
+                    buttonsPanel.add(buttons[i][j]);
+                }    
+            }
+
+
+            this.setResizable(false);//prevent a Java frame from being displayed in full screen
+            this.add(buttonsPanel);
+            
+            this.setLocationRelativeTo(null); // Set the frame at the middle of the screen
+            word=generateWord(); // generate the word
+            //addBorderInTheRound(new Color(51, 57, 57));
+            addBorderInTheRound(new Color(190, 190, 190));        
+        
+
 
 
         }
@@ -160,7 +163,8 @@ import Words.*;
                 else{
                     fillButton(text);
                 }
-            addBorderInTheRound(new Color(51, 57, 57));
+                addBorderInTheRound(new Color(190, 190, 190));
+        
            }
         }
         @Override
