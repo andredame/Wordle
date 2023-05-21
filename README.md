@@ -1,18 +1,6 @@
-## Getting Started
-
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+#Wordle Puzzle Game 
+Wordle is a popular puzzle game that challenges the players to find the hidden word in 6 attempts.
+Since the player has made a guess, the collor of each letter changes based on the hidden word: 
+  1.If it turns green, the letter is in the right spot.
+  2.if it turns yellow, the letter is in the word but at the wrong position.
+  3.if it turns black, it means the letter is not in the word.
