@@ -20,6 +20,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import Character.*;
 import Words.*;
@@ -82,6 +83,7 @@ import Words.*;
                     button.addActionListener(this::buttonPressed);
                     button.setBackground(background);
                     button.setForeground(new Color(153, 153, 153));
+                    
                     String actionCommand = "key_" + key[row][col];
                     button.setActionCommand(actionCommand);
                     button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(key[row][col]), actionCommand);
@@ -122,15 +124,21 @@ import Words.*;
             this.add(label,BorderLayout.NORTH);
 
             //TENTATIVAS 
+          
             buttonsPanel.setBackground(background);
             buttonsPanel.setVisible(true);
             buttonsPanel.setSize(new Dimension(100, 100));
+            
             for (int i=0;i<6;i++){
+            
                 for (int j=0;j<5;j++){
                     buttons[i][j]=new JButton();
                     buttons[i][j].setBackground(background); 
+                    System.out.println(buttons[i][j].getForeground());
+                    System.out.println(buttons[i][j].getForeground());
                     buttons[i][j].setEnabled(false);
                     buttons[i][j].setFont(new Font ("Apple",Font.BOLD,20));
+                    
                     buttonsPanel.add(buttons[i][j]);
                     Dimension buttonSize = new Dimension(150, 50); // Set the preferred size for the button
                     buttons[i][j].setPreferredSize(buttonSize);
@@ -215,9 +223,32 @@ import Words.*;
                 }
             }
         }
-        public void PaintKeyboard(char c,int pointer){
-           String l=Character.toString(c).toUpperCase();
-           //for(int i=0;i<)
+        public void PaintKeyboard(CharacterAttempt c){
+           Color black=new Color (49, 42, 44);
+           
+            Color g=new Color(0, 68, 49);
+            Color y=new Color(198, 159, 0);
+        
+            System.out.println(c);
+                for (JButton button : buttonsKeys) {
+                    if (button.getText().equals(Character.toString(c.getElement()).toUpperCase())) {
+                        
+                        if(button.getBackground().equals(g))break;
+                        else{
+                            if (c.getPointer() == 1 ) {
+                                button.setBackground(g);//set the green color of the key in the keyboard 
+                            } else if (c.getPointer() == 2 ) {
+                                button.setBackground(y);//set the yellow color of the key in the keyboard 
+                            } else {
+                                button.setBackground(black);//set the black color of the key in the keyboard 
+                            }
+                            break; 
+                        }
+                        
+                    }
+                
+            }
+            
         }
         public void addBorderInTheRound(Color c){
             if (round<6){
@@ -293,6 +324,7 @@ import Words.*;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
+                PaintKeyboard(charOfAttempt[i]);
             }
             
         }
