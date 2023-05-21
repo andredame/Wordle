@@ -6,10 +6,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -37,9 +40,10 @@ import Words.*;
 
 
         //KEYBOARD ATRIBUTES
+        private ArrayList<JButton> buttonsKeys;
         private JFrame f = new JFrame("Keyboard");
         private JPanel keyboard = new JPanel();
-        
+        //private JButton buttons[][]=new JButton[6][5];
         private static final String[][] key = {
             { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P","BACK_SPACE"},
             { "A", "S", "D", "F", "G", "H", "J", "K", "L",  "ENTER"},
@@ -50,8 +54,9 @@ import Words.*;
         
         
         public FramePlay(){ 
-            background=new Color (78, 44, 67);
-            Color letterWordle= new Color(45, 242, 19);
+
+            background=new Color (86, 85, 84);
+            Color letterWordle= Color.WHITE;
             //FRAME 
             this.round=0;
             this.setBackground(background);
@@ -61,7 +66,7 @@ import Words.*;
             //Atributes of the keyboard
 
             keyboard.setLayout(new GridBagLayout());
-
+            buttonsKeys=new ArrayList<>();
             JPanel pRow;
             GridBagConstraints c = new GridBagConstraints();
             c.anchor = GridBagConstraints.WEST;
@@ -87,8 +92,8 @@ import Words.*;
                         }
                     });
                     pRow.add(button);
+                    buttonsKeys.add(button);
                 }
-
                 keyboard.add(pRow, c);
             }
 
@@ -198,7 +203,7 @@ import Words.*;
                     PaintFrame(attemptWord.toLowerCase()); //set the pointers
                     gameIsOver=checkWord(attemptWord.toLowerCase());
                     if (!gameIsOver){ //If the game is not over goes to the next round 
-                        addBorderInTheRound(new Color(220, 0, 0));
+                        addBorderInTheRound(background);
                         round++;
                         letter=0;
                     }
@@ -211,85 +216,8 @@ import Words.*;
             }
         }
         public void PaintKeyboard(char c,int pointer){
-            
-            Color green = new Color(117, 219, 146);
-            Color red=Color.RED;
-            Color yellow =new Color(243, 195, 88);
-            
-            /* 
-            for (Keyboard objeto : keysAbove) {
-                
-                String charString = String.valueOf(Character.toUpperCase(c));
-                
-                if (objeto.getCharacter().equals(charString)) {
-                    if(objeto.getPointer()==1){
-                        return;
-                    }else{
-                        if (pointer==1){
-                            objeto.setPointer(pointer);
-                            objeto.setColor(green);
-                            return;
-                        }else{
-                            if(pointer==2 && objeto.getPointer()==0 ){
-                                return;
-                            }
-                        }
-                    }
-                    
-                }
-            }
-            for (Keyboard objeto : keysMiddle) {
-
-                    String charString = String.valueOf(Character.toUpperCase(c));
-                    if (objeto.getCharacter().equals(charString)) {
-                        if(objeto.getPointer()==1){
-
-                            return;
-                        }else{
-                            if (pointer==1){
-                           
-                                objeto.setColor(green);
-                                objeto.setPointer(pointer);
-                                return;
-                            }else{
-                                if(pointer==2 && objeto.getPointer()==0 ){
-                                    objeto.setColor(yellow);
-                                    pRow[1].setBackground(yellow);
-                                    objeto.setPointer(pointer);
-                                    
-                                    
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            ,
-            for (Keyboard objeto : keysBelow) {
-                
-                String charString = String.valueOf(Character.toUpperCase(c));
-                if (objeto.getCharacter().equals(charString)) {
-                    if(objeto.getPointer()==1){
-                        return;
-                    }else{
-                        if (pointer==1){
-                       
-                            objeto.setColor(green);
-                            objeto.setPointer(pointer);
-                            return;
-                        }else{
-                            if(pointer==2 && objeto.getPointer()==0 ){
-                                objeto.setColor(yellow);
-                                pRow[0].setBackground(yellow);
-                                objeto.setPointer(pointer);
-                               
-                                
-                                return;
-                            }
-                        }
-                    }
-                }
-            } */
+           String l=Character.toString(c).toUpperCase();
+           //for(int i=0;i<)
         }
         public void addBorderInTheRound(Color c){
             if (round<6){
@@ -365,8 +293,6 @@ import Words.*;
             }
             for(int i=0;i<5;i++){
                 buttons[round][i].setBackground(charOfAttempt[i].getColor());
-                
-                
             }
             
         }

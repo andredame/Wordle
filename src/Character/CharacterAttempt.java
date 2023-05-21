@@ -9,6 +9,7 @@ public class CharacterAttempt {
     public CharacterAttempt(char element){
         this.element=element;
         this.pointer=0;
+        color=new Color (49, 42, 44);
     }
     
     public char getElement() {
@@ -20,12 +21,10 @@ public class CharacterAttempt {
     public void setPointer(int pointer) {
         this.pointer = pointer;
         if(pointer==1){
-            color=new Color(117, 219, 146);
+            color=new Color(0, 68, 49);
         }
         else if(pointer ==2){
-            color=new Color(243, 195, 88);
-        }else{
-            color=Color.RED;
+            color=new Color(198, 159, 0);
         }
     }
     public int getPointer() {
