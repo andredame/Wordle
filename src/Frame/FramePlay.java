@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
-import java.awt.List;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,7 +20,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+
 import javax.swing.border.Border;
 import Character.*;
 import Words.*;
@@ -30,8 +30,8 @@ import Words.*;
     public class FramePlay extends JFrame implements ActionListener,KeyListener{
 
         private Color background;
-        private JButton buttons[][]=new JButton[6][5];
-        private JPanel buttonsPanel=new JPanel();
+        private JButton displayAttempt[][]=new JButton[6][5];
+        private JPanel displayAttemptPanel=new JPanel();
         private Label label;
 
         private String word;
@@ -41,10 +41,10 @@ import Words.*;
 
 
         //KEYBOARD ATRIBUTES
-        private ArrayList<JButton> buttonsKeys;
+        private ArrayList<JButton> displayAttemptKeys;
         private JFrame f = new JFrame("Keyboard");
         private JPanel keyboard = new JPanel();
-        //private JButton buttons[][]=new JButton[6][5];
+        //private JButton displayAttempt[][]=new JButton[6][5];
         private static final String[][] key = {
             { "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P","BACK_SPACE"},
             { "A", "S", "D", "F", "G", "H", "J", "K", "L",  "ENTER"},
@@ -58,6 +58,8 @@ import Words.*;
 
             background=new Color (86, 85, 84);
             Color letterWordle= Color.WHITE;
+
+
             //FRAME 
             this.round=0;
             this.setBackground(background);
@@ -67,7 +69,7 @@ import Words.*;
             //Atributes of the keyboard
 
             keyboard.setLayout(new GridBagLayout());
-            buttonsKeys=new ArrayList<>();
+            displayAttemptKeys=new ArrayList<>();
             JPanel pRow;
             GridBagConstraints c = new GridBagConstraints();
             c.anchor = GridBagConstraints.WEST;
@@ -94,71 +96,64 @@ import Words.*;
                         }
                     });
                     pRow.add(button);
-                    buttonsKeys.add(button);
+                    displayAttemptKeys.add(button);
                 }
                 keyboard.add(pRow, c);
             }
 
             f.add(keyboard);
         
-        keyboard.setBackground(background);
-        JPanel mainPanel = new JPanel();
+        keyboard.setBackground(background); //color of the keybaord
+        JPanel mainPanel = new JPanel(); 
         mainPanel.setBackground(background);
         mainPanel.add(keyboard);
         this.add(mainPanel,BorderLayout.SOUTH);
         this.addKeyListener(null);
-            
+        //FRASE E FAIXA PRETA DE CIMA 
+        label=new Label();
+        label.setFont(new Font ("Bodoni MT",Font.BOLD,40));
+        label.setAlignment(label.CENTER);
+        label.setText("WORDLE");
+        label.setBackground(background);
+        label.setForeground(letterWordle);
+        label.isOpaque();
+        this.add(label,BorderLayout.NORTH);
+
+        //Attempts 
         
-            
-
-            
-
-            //FRASE E FAIXA PRETA DE CIMA 
-            label=new Label();
-            label.setFont(new Font ("Bodoni MT",Font.BOLD,40));
-            label.setAlignment(label.CENTER);
-            label.setText("WORDLE");
-            label.setBackground(background);
-            label.setForeground(letterWordle);
-            label.isOpaque();
-            this.add(label,BorderLayout.NORTH);
-
-            //TENTATIVAS 
-          
-            buttonsPanel.setBackground(background);
-            buttonsPanel.setVisible(true);
-            buttonsPanel.setSize(new Dimension(100, 100));
-            
-            for (int i=0;i<6;i++){
-            
-                for (int j=0;j<5;j++){
-                    buttons[i][j]=new JButton();
-                    buttons[i][j].setBackground(background); 
-                    System.out.println(buttons[i][j].getForeground());
-                    System.out.println(buttons[i][j].getForeground());
-                    buttons[i][j].setEnabled(false);
-                    buttons[i][j].setFont(new Font ("Apple",Font.BOLD,20));
-                    
-                    buttonsPanel.add(buttons[i][j]);
-                    Dimension buttonSize = new Dimension(150, 50); // Set the preferred size for the button
-                    buttons[i][j].setPreferredSize(buttonSize);
-                    buttonsPanel.add(buttons[i][j]);
-                }    
-            }
+        displayAttemptPanel.setBackground(background);
+        displayAttemptPanel.setVisible(true);
+        displayAttemptPanel.setSize(new Dimension(100, 100));
+        
+        for (int i=0;i<6;i++){
+        
+            for (int j=0;j<5;j++){
+                displayAttempt[i][j]=new JButton();
+                displayAttempt[i][j].setBackground(background); 
+                System.out.println(displayAttempt[i][j].getForeground());
+                System.out.println(displayAttempt[i][j].getForeground());
+                displayAttempt[i][j].setEnabled(false);
+                displayAttempt[i][j].setFont(new Font ("Apple",Font.BOLD,20));
+                
+                displayAttemptPanel.add(displayAttempt[i][j]);
+                Dimension displayAttemptize = new Dimension(150, 50); // Set the preferred size for the button
+                displayAttempt[i][j].setPreferredSize(displayAttemptize);
+                displayAttemptPanel.add(displayAttempt[i][j]);
+            }    
+        }
 
 
             this.setResizable(false);//prevent a Java frame from being displayed in full screen
-            this.add(buttonsPanel);
-            
+            this.add(displayAttemptPanel);
             this.setLocationRelativeTo(null); // Set the frame at the middle of the screen
             word=generateWord(); // generate the word
             //addBorderInTheRound(new Color(51, 57, 57));
             addBorderInTheRound(new Color(190, 190, 190));        
-        
-
-
-
         }
+        /**
+         * 
+         * @param e
+         */
         private void buttonPressed(ActionEvent e) {
 
             JButton button = (JButton) e.getSource();
@@ -188,15 +183,22 @@ import Words.*;
             }
     
         }
+        /**
+         * Fill the box with the typed letter
+         * @param code letter typed
+         */
         public void fillButton(String code){
             if (letter<5){
-                buttons[round][letter].setText(code);
+                displayAttempt[round][letter].setText(code);
                 letter++;
             }
             
         }
+        /**
+         * "If the backspace is pressed, delete the letter.
+         */
         public void backSpace(){
-            buttons[round][--letter].setText(" ");
+            displayAttempt[round][--letter].setText(" ");
         }
 
         public void enterPressed(){
@@ -205,8 +207,8 @@ import Words.*;
                 String attemptWord="";
                 if (letter==5){ //check wheter user submitted a 5 letter word or not
                     for(int i=0;i<5;i++){
-                        System.out.println(attemptWord+=buttons[round][i].getText());
-                        //attemptWord+=buttons[round][i].getText(); //add in AttemptWord the characters of the Word
+                        System.out.println(attemptWord+=displayAttempt[round][i].getText());
+                        //attemptWord+=displayAttempt[round][i].getText(); //add in AttemptWord the characters of the Word
                     }
                     PaintFrame(attemptWord.toLowerCase()); //set the pointers
                     gameIsOver=checkWord(attemptWord.toLowerCase());
@@ -223,6 +225,10 @@ import Words.*;
                 }
             }
         }
+        /**
+         * 
+         * @param c
+         */
         public void PaintKeyboard(CharacterAttempt c){
            Color black=new Color (49, 42, 44);
            
@@ -230,7 +236,7 @@ import Words.*;
             Color y=new Color(198, 159, 0);
         
             System.out.println(c);
-                for (JButton button : buttonsKeys) {
+                for (JButton button : displayAttemptKeys) {
                     if (button.getText().equals(Character.toString(c.getElement()).toUpperCase())) {
                         
                         if(button.getBackground().equals(g))break;
@@ -250,33 +256,44 @@ import Words.*;
             }
             
         }
+        /**
+         * set the color of the edge of each box
+         * @param c color of the edge 
+         */
         public void addBorderInTheRound(Color c){
             if (round<6){
-                Border roundBorder = BorderFactory.createLineBorder(c, 3);
-                for (int j = 0; j < buttons[round].length; j++) {
-                    buttons[round][j].setBorder(roundBorder);
-                    buttons[round][j].setForeground(c);
+                Border roundBorder = BorderFactory.createLineBorder(c, 5);
+                for (int j = 0; j < displayAttempt[round].length; j++) {
+                    displayAttempt[round][j].setBorder(roundBorder);
+                    displayAttempt[round][j].setForeground(c);
                 }
             }
         }
-        
+        /**
+         * return the answer
+         * @return answer
+         */
         public String getWord() {
             return word;
         }
         public boolean validWord(String attempt){
             return false;
         }
+        /**
+         * Generate randomly word for the game 
+         * @returnanswer
+         */
         public String generateWord(){
             WordGenerator w = new WordGenerator();
             String word = w.generateWord();
             System.out.println(word);
             return word;
         } 
-        public JButton[][] getButtons() {
-            return buttons;
+        public JButton[][] getdisplayAttempt() {
+            return displayAttempt;
         }
         /**
-         * @param attemptWord
+         * @param attemptWord the guess of the user
          */
         public void PaintFrame(String attemptWord){
             //Word Game
@@ -323,11 +340,16 @@ import Words.*;
     
             }
             for(int i=0;i<5;i++){
-                buttons[round][i].setBackground(charOfAttempt[i].getColor());
+                displayAttempt[round][i].setBackground(charOfAttempt[i].getColor());
                 PaintKeyboard(charOfAttempt[i]);
             }
             
         }
+        /**
+         * Check wheter the word is equal to the answer
+         * @param attempt attempt word 
+         * @return true if is equal Or false is not equal
+         */
         public boolean checkWord(String attempt){
             return attempt.equals(word);
         }

@@ -1,11 +1,10 @@
 package Frame;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
