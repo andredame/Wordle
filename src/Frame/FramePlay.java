@@ -156,9 +156,8 @@ import Words.*;
          */
         private void buttonPressed(ActionEvent e) {
 
-            JButton button = (JButton) e.getSource();
-            String text = button.getText();
-            System.out.println(text);
+            JButton button = (JButton) e.getSource(); 
+            String text = button.getText(); 
             if (!gameIsOver){
                 addBorderInTheRound(new Color(51, 57, 57));
                 if (text.equals("ENTER")) {
@@ -203,7 +202,7 @@ import Words.*;
 
         public void enterPressed(){
             
-            if(round<6){                //check the round 
+            if(round<6){                
                 String attemptWord="";
                 if (letter==5){ //check wheter user submitted a 5 letter word or not
                     for(int i=0;i<5;i++){
@@ -226,8 +225,8 @@ import Words.*;
             }
         }
         /**
-         * 
-         * @param c
+         * Paint the letter in the keyboard based on the letter 
+         * @param c letter 
          */
         public void PaintKeyboard(CharacterAttempt c){
            Color black=new Color (49, 42, 44);
