@@ -15,7 +15,7 @@ public class WordGenerator {
    
     public String generateWord() {
         Random r=new Random();
-        int numLine=r.nextInt(1,95);
+        int numLine=r.nextInt(1,2);
         Path path = Paths.get("src","Words","Words.csv");
         String randomLine="";
         boolean flag=true;

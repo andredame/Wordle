@@ -6,13 +6,11 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Label;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,7 +18,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-
 import javax.swing.border.Border;
 import Character.*;
 import Words.*;
@@ -285,7 +282,7 @@ import Words.*;
         public String generateWord(){
             WordGenerator w = new WordGenerator();
             String word = w.generateWord();
-            System.out.println(word);
+            //System.out.println(word);
             return word;
         } 
         public JButton[][] getdisplayAttempt() {
@@ -357,7 +354,6 @@ import Words.*;
         }
         @Override
         public void keyReleased(KeyEvent e) {
-            
         }
         
         
